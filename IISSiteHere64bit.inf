@@ -1,0 +1,53 @@
+;
+; "IIS Express Site Here" PowerToy
+;
+; Credits:
+; Robert McLaws' original idea at http://weblogs.asp.net/rmclaws/archive/2005/10/25/428422.aspx
+; Phil Haack's update at http://haacked.com/archive/2008/06/24/vs2008-web-server-here-shell-extension.aspx
+; Tuna Toksoz's comment at http://haacked.com/archive/2008/06/24/vs2008-web-server-here-shell-extension.aspx#comment-747525580
+; Chris McLeod's initial upload to GitHub at http://chrismcleod.me/2011/01/14/iis-express-website-here-shell-extension/
+; Daniel Cazzulino's refactor as a .inf that can be installed and uninstalled.
+
+[version]
+Signature="$CHICAGO$"
+Provider="%Author%"
+
+[DefaultInstall]
+CopyFiles = IISSiteHere.Files.Inf
+AddReg    = Default.reg,Install.reg
+
+[DefaultUnInstall]
+DelFiles  = IISSiteHere.Files.Inf
+DelReg    = Uninstall.Reg
+
+[SourceDisksNames]
+1="IIS Express Site Here","",1
+
+[SourceDisksFiles]
+IISSiteHere64bit.INF=1
+
+[DestinationDirs]
+IISSiteHere.Files.Inf = 17
+
+[IISSiteHere.Files.Inf]
+IISSiteHere64bit.INF
+
+[Default.Reg]
+HKLM,%UDHERE%,DisplayName,,"%Name%"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUnInstall 132 %17%\IISSiteHere64bit.inf"
+
+[Install.Reg]
+HKCR,Directory\Shell\IISSiteHere,,,"%Accelerator%"
+HKCR,Directory\Shell\IISSiteHere,HasLUAShield,,
+HKCR,Directory\Shell\IISSiteHere\command,,,"%Command%"
+
+[Uninstall.Reg]
+HKLM,%UDHERE%
+HKCR,Directory\Shell\IISSiteHere
+
+[Strings]
+Author="Daniel Cazzulino"
+Name="IIS Express Site Here"
+Accelerator="IIS Express &Site Here"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\IISSiteHere"
+Command="cmd /c start /D""C:\Program Files (x86)\IIS Express\"" iisexpress.exe /trace:i /port:%%random%% /path:""%1"""
